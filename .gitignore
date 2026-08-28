@@ -1,0 +1,31 @@
+# Build outputs
+build/
+out/
+*.dll
+*.lib
+*.exp
+*.pdb
+*.obj
+*.log
+
+# CMake cache
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# External dependencies (submodule - tracked separately)
+extern/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# IDE
+.vscode/
+.idea/
+
+# Windows
+Thumbs.db
+desktop.ini
