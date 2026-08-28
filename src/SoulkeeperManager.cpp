@@ -24,6 +24,11 @@ namespace Soulkeeper
         PassiveRechargeManager::GetSingleton()->ResetGameTimeTracker();
         MenuManager::GetSingleton()->Register();
 
+        if (auto* ui = RE::UI::GetSingleton()) {
+            ui->AddEventSink<RE::MenuOpenCloseEvent>(this);
+            logger::info("[SoulkeeperManager] Registered MenuOpenCloseEvent sink.");
+        }
+
         logger::info("Soulkeeper Manager initialized.");
     }
 
@@ -33,9 +38,27 @@ namespace Soulkeeper
     }
 
     RE::BSEventNotifyControl SoulkeeperManager::ProcessEvent(
-        const RE::MenuOpenCloseEvent*,
+        const RE::MenuOpenCloseEvent* a_event,
         RE::BSTEventSource<RE::MenuOpenCloseEvent>*)
     {
+        if (!a_event) {
+            return RE::BSEventNotifyControl::kContinue;
+        }
+
+        // When inventory or container (follower trade/exchange) menu is closed (!opening)
+        if (!a_event->opening) {
+            if (a_event->menuName == RE::ContainerMenu::MENU_NAME ||
+                a_event->menuName == RE::InventoryMenu::MENU_NAME ||
+                a_event->menuName == RE::BarterMenu::MENU_NAME) {
+                
+                logger::info("[SoulkeeperManager] Menu '{}' closed. Immediately processing weapon auto-charges...", a_event->menuName.c_str());
+                
+                // Immediately process player and follower charging with newly given soul gems
+                PlayerManager::GetSingleton()->ProcessPlayer();
+                ProcessFollowers();
+            }
+        }
+
         return RE::BSEventNotifyControl::kContinue;
     }
 
