@@ -47,6 +47,20 @@ namespace Soulkeeper
         uint32_t uStockGreaterCount{ 0 };            // Desired count of Greater Soul Gems
         uint32_t uStockGrandCount{ 0 };              // Desired count of Grand Soul Gems
 
+        // Soul Gem Charge Rates (Enchantment points restored)
+        uint32_t uChargePetty{ 250 };
+        uint32_t uChargeLesser{ 500 };
+        uint32_t uChargeCommon{ 1000 };
+        uint32_t uChargeGreater{ 2000 };
+        uint32_t uChargeGrand{ 3000 };
+
+        // Soul Gem Purchase Prices (Follower town purchase cost in Gold)
+        uint32_t uPricePetty{ 50 };
+        uint32_t uPriceLesser{ 100 };
+        uint32_t uPriceCommon{ 150 };
+        uint32_t uPriceGreater{ 300 };
+        uint32_t uPriceGrand{ 500 };
+
         // Notifications
         bool bEnableNotifications{ true };
         bool bNotifyPlayerCharge{ true };

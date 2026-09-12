@@ -39,7 +39,7 @@ namespace Soulkeeper
         auto settings = Settings::GetSingleton();
 
         ImGuiMCP::Text("Soulkeeper - Smart Weapon Charging System");
-        ImGuiMCP::TextDisabled("Runtime: Skyrim AE 1.6.1170 | SKSE64");
+        ImGuiMCP::TextDisabled("Runtime: Skyrim SE (1.5.97) | AE (1.6.x - 1.7.x) | VR | SKSE64");
         ImGuiMCP::Separator();
 
         if (ImGuiMCP::BeginTabBar("SoulkeeperTabs", 0)) {
@@ -89,34 +89,90 @@ namespace Soulkeeper
                     ImGuiMCP::TextColored(ImGuiMCP::ImVec4(1.0f, 0.85f, 0.3f, 1.0f), "Follower Target Stock Inventory (Per Tier):");
 
                     int stockPetty = static_cast<int>(settings->uStockPettyCount);
-                    if (ImGuiMCP::SliderInt("Petty Soul Gems Stock (50g / 250chg)", &stockPetty, 0, 20, "%d gems", 0)) {
+                    if (ImGuiMCP::SliderInt("Petty Soul Gems Stock", &stockPetty, 0, 20, "%d gems", 0)) {
                         settings->uStockPettyCount = static_cast<uint32_t>(stockPetty);
                         settingsChanged = true;
                     }
 
                     int stockLesser = static_cast<int>(settings->uStockLesserCount);
-                    if (ImGuiMCP::SliderInt("Lesser Soul Gems Stock (100g / 500chg)", &stockLesser, 0, 20, "%d gems", 0)) {
+                    if (ImGuiMCP::SliderInt("Lesser Soul Gems Stock", &stockLesser, 0, 20, "%d gems", 0)) {
                         settings->uStockLesserCount = static_cast<uint32_t>(stockLesser);
                         settingsChanged = true;
                     }
 
                     int stockCommon = static_cast<int>(settings->uStockCommonCount);
-                    if (ImGuiMCP::SliderInt("Common Soul Gems Stock (150g / 1000chg)", &stockCommon, 0, 20, "%d gems", 0)) {
+                    if (ImGuiMCP::SliderInt("Common Soul Gems Stock", &stockCommon, 0, 20, "%d gems", 0)) {
                         settings->uStockCommonCount = static_cast<uint32_t>(stockCommon);
                         settingsChanged = true;
                     }
 
                     int stockGreater = static_cast<int>(settings->uStockGreaterCount);
-                    if (ImGuiMCP::SliderInt("Greater Soul Gems Stock (300g / 2000chg)", &stockGreater, 0, 20, "%d gems", 0)) {
+                    if (ImGuiMCP::SliderInt("Greater Soul Gems Stock", &stockGreater, 0, 20, "%d gems", 0)) {
                         settings->uStockGreaterCount = static_cast<uint32_t>(stockGreater);
                         settingsChanged = true;
                     }
 
                     int stockGrand = static_cast<int>(settings->uStockGrandCount);
-                    if (ImGuiMCP::SliderInt("Grand Soul Gems Stock (500g / 3000chg)", &stockGrand, 0, 20, "%d gems", 0)) {
+                    if (ImGuiMCP::SliderInt("Grand Soul Gems Stock", &stockGrand, 0, 20, "%d gems", 0)) {
                         settings->uStockGrandCount = static_cast<uint32_t>(stockGrand);
                         settingsChanged = true;
                     }
+                }
+
+                ImGuiMCP::Separator();
+                ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Soul Gem Charge Rates (Enchantment Points Restored)");
+                int chgPetty = static_cast<int>(settings->uChargePetty);
+                if (ImGuiMCP::SliderInt("Petty Charge Amount", &chgPetty, 50, 2000, "%d pts", 0)) {
+                    settings->uChargePetty = static_cast<uint32_t>(chgPetty);
+                    settingsChanged = true;
+                }
+                int chgLesser = static_cast<int>(settings->uChargeLesser);
+                if (ImGuiMCP::SliderInt("Lesser Charge Amount", &chgLesser, 100, 3000, "%d pts", 0)) {
+                    settings->uChargeLesser = static_cast<uint32_t>(chgLesser);
+                    settingsChanged = true;
+                }
+                int chgCommon = static_cast<int>(settings->uChargeCommon);
+                if (ImGuiMCP::SliderInt("Common Charge Amount", &chgCommon, 200, 5000, "%d pts", 0)) {
+                    settings->uChargeCommon = static_cast<uint32_t>(chgCommon);
+                    settingsChanged = true;
+                }
+                int chgGreater = static_cast<int>(settings->uChargeGreater);
+                if (ImGuiMCP::SliderInt("Greater Charge Amount", &chgGreater, 500, 10000, "%d pts", 0)) {
+                    settings->uChargeGreater = static_cast<uint32_t>(chgGreater);
+                    settingsChanged = true;
+                }
+                int chgGrand = static_cast<int>(settings->uChargeGrand);
+                if (ImGuiMCP::SliderInt("Grand / Black Charge Amount", &chgGrand, 1000, 15000, "%d pts", 0)) {
+                    settings->uChargeGrand = static_cast<uint32_t>(chgGrand);
+                    settingsChanged = true;
+                }
+
+                ImGuiMCP::Separator();
+                ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Soul Gem Purchase Prices (Follower Cost in Gold)");
+                int prcPetty = static_cast<int>(settings->uPricePetty);
+                if (ImGuiMCP::SliderInt("Petty Purchase Price", &prcPetty, 10, 500, "%d Gold", 0)) {
+                    settings->uPricePetty = static_cast<uint32_t>(prcPetty);
+                    settingsChanged = true;
+                }
+                int prcLesser = static_cast<int>(settings->uPriceLesser);
+                if (ImGuiMCP::SliderInt("Lesser Purchase Price", &prcLesser, 20, 1000, "%d Gold", 0)) {
+                    settings->uPriceLesser = static_cast<uint32_t>(prcLesser);
+                    settingsChanged = true;
+                }
+                int prcCommon = static_cast<int>(settings->uPriceCommon);
+                if (ImGuiMCP::SliderInt("Common Purchase Price", &prcCommon, 30, 1500, "%d Gold", 0)) {
+                    settings->uPriceCommon = static_cast<uint32_t>(prcCommon);
+                    settingsChanged = true;
+                }
+                int prcGreater = static_cast<int>(settings->uPriceGreater);
+                if (ImGuiMCP::SliderInt("Greater Purchase Price", &prcGreater, 50, 3000, "%d Gold", 0)) {
+                    settings->uPriceGreater = static_cast<uint32_t>(prcGreater);
+                    settingsChanged = true;
+                }
+                int prcGrand = static_cast<int>(settings->uPriceGrand);
+                if (ImGuiMCP::SliderInt("Grand Purchase Price", &prcGrand, 100, 5000, "%d Gold", 0)) {
+                    settings->uPriceGrand = static_cast<uint32_t>(prcGrand);
+                    settingsChanged = true;
                 }
 
                 ImGuiMCP::Separator();

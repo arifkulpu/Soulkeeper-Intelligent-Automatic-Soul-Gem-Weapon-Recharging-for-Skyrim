@@ -12,12 +12,13 @@ namespace Soulkeeper
 
     uint32_t SoulGemManager::GetSoulChargeValue(RE::SOUL_LEVEL a_level)
     {
+        auto settings = Settings::GetSingleton();
         switch (a_level) {
-        case RE::SOUL_LEVEL::kPetty:   return 250;
-        case RE::SOUL_LEVEL::kLesser:  return 500;
-        case RE::SOUL_LEVEL::kCommon:  return 1000;
-        case RE::SOUL_LEVEL::kGreater: return 2000;
-        case RE::SOUL_LEVEL::kGrand:   return 3000;
+        case RE::SOUL_LEVEL::kPetty:   return settings->uChargePetty;
+        case RE::SOUL_LEVEL::kLesser:  return settings->uChargeLesser;
+        case RE::SOUL_LEVEL::kCommon:  return settings->uChargeCommon;
+        case RE::SOUL_LEVEL::kGreater: return settings->uChargeGreater;
+        case RE::SOUL_LEVEL::kGrand:   return settings->uChargeGrand;
         default:                       return 0;
         }
     }

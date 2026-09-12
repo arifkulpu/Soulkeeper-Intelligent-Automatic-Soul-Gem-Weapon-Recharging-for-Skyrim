@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.23)
 project(
     Soulkeeper
     VERSION 1.0.0
-    DESCRIPTION "Smart Weapon Charging System for Skyrim AE 1.6.1170"
+    DESCRIPTION "Smart Weapon Charging System for Skyrim SE, AE and VR"
     LANGUAGES CXX
 )
 
@@ -50,8 +50,8 @@ FetchContent_MakeAvailable(simpleini)
 
 # 5. Configure CommonLibSSE-NG options
 set(ENABLE_SKYRIM_AE ON CACHE BOOL "Enable Skyrim AE support" FORCE)
-set(ENABLE_SKYRIM_SE OFF CACHE BOOL "Enable Skyrim SE support" FORCE)
-set(ENABLE_SKYRIM_VR OFF CACHE BOOL "Enable Skyrim VR support" FORCE)
+set(ENABLE_SKYRIM_SE ON CACHE BOOL "Enable Skyrim SE support" FORCE)
+set(ENABLE_SKYRIM_VR ON CACHE BOOL "Enable Skyrim VR support" FORCE)
 set(BUILD_TESTS OFF CACHE BOOL "Disable CommonLibSSE tests" FORCE)
 set(SKSE_SUPPORT_XBYAK ON CACHE BOOL "Enable Xbyak support" FORCE)
 

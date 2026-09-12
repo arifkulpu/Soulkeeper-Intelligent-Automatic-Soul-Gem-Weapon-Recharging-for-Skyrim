@@ -43,6 +43,10 @@ namespace Soulkeeper
         // Clear cache entry when an actor drops/unequips a weapon
         void ClearCache(RE::Actor* a_actor);
 
+        // For ranged weapons: read current ExtraCharge from InventoryChanges and update cache.
+        // Called immediately after TESPlayerBowShotEvent so the HUD shows the post-shot value.
+        void SyncBowCacheFromInventory(RE::Actor* a_actor, RE::FormID a_weaponFormID);
+
     private:
         WeaponManager() = default;
         ~WeaponManager() = default;

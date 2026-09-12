@@ -13,12 +13,13 @@ namespace Soulkeeper
 
     uint32_t PurchaseManager::CalculateSoulGemPrice(RE::SOUL_LEVEL a_level)
     {
+        auto settings = Settings::GetSingleton();
         switch (a_level) {
-        case RE::SOUL_LEVEL::kPetty:   return 50;
-        case RE::SOUL_LEVEL::kLesser:  return 100;
-        case RE::SOUL_LEVEL::kCommon:  return 150;
-        case RE::SOUL_LEVEL::kGreater: return 300;
-        case RE::SOUL_LEVEL::kGrand:   return 500;
+        case RE::SOUL_LEVEL::kPetty:   return settings->uPricePetty;
+        case RE::SOUL_LEVEL::kLesser:  return settings->uPriceLesser;
+        case RE::SOUL_LEVEL::kCommon:  return settings->uPriceCommon;
+        case RE::SOUL_LEVEL::kGreater: return settings->uPriceGreater;
+        case RE::SOUL_LEVEL::kGrand:   return settings->uPriceGrand;
         default:                       return 0;
         }
     }

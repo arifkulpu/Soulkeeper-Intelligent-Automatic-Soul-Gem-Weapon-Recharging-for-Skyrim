@@ -63,6 +63,20 @@ namespace Soulkeeper
         uStockGreaterCount = static_cast<uint32_t>(ini.GetLongValue("FollowerStock", "uStockGreaterCount", uStockGreaterCount));
         uStockGrandCount = static_cast<uint32_t>(ini.GetLongValue("FollowerStock", "uStockGrandCount", uStockGrandCount));
 
+        // Soul Gem Charge Rates
+        uChargePetty = static_cast<uint32_t>(ini.GetLongValue("SoulGemChargeRates", "uChargePetty", uChargePetty));
+        uChargeLesser = static_cast<uint32_t>(ini.GetLongValue("SoulGemChargeRates", "uChargeLesser", uChargeLesser));
+        uChargeCommon = static_cast<uint32_t>(ini.GetLongValue("SoulGemChargeRates", "uChargeCommon", uChargeCommon));
+        uChargeGreater = static_cast<uint32_t>(ini.GetLongValue("SoulGemChargeRates", "uChargeGreater", uChargeGreater));
+        uChargeGrand = static_cast<uint32_t>(ini.GetLongValue("SoulGemChargeRates", "uChargeGrand", uChargeGrand));
+
+        // Soul Gem Purchase Prices
+        uPricePetty = static_cast<uint32_t>(ini.GetLongValue("SoulGemPrices", "uPricePetty", uPricePetty));
+        uPriceLesser = static_cast<uint32_t>(ini.GetLongValue("SoulGemPrices", "uPriceLesser", uPriceLesser));
+        uPriceCommon = static_cast<uint32_t>(ini.GetLongValue("SoulGemPrices", "uPriceCommon", uPriceCommon));
+        uPriceGreater = static_cast<uint32_t>(ini.GetLongValue("SoulGemPrices", "uPriceGreater", uPriceGreater));
+        uPriceGrand = static_cast<uint32_t>(ini.GetLongValue("SoulGemPrices", "uPriceGrand", uPriceGrand));
+
         // Notifications
         bEnableNotifications = ini.GetBoolValue("Notifications", "bEnableNotifications", bEnableNotifications);
         bNotifyPlayerCharge = ini.GetBoolValue("Notifications", "bNotifyPlayerCharge", bNotifyPlayerCharge);
@@ -120,6 +134,18 @@ namespace Soulkeeper
         ini.SetLongValue("FollowerStock", "uStockCommonCount", uStockCommonCount, "; Target quantity of Common Soul Gems in follower inventory");
         ini.SetLongValue("FollowerStock", "uStockGreaterCount", uStockGreaterCount, "; Target quantity of Greater Soul Gems in follower inventory");
         ini.SetLongValue("FollowerStock", "uStockGrandCount", uStockGrandCount, "; Target quantity of Grand Soul Gems in follower inventory");
+
+        ini.SetLongValue("SoulGemChargeRates", "uChargePetty", uChargePetty, "; Amount of weapon charge restored by a Petty Soul Gem");
+        ini.SetLongValue("SoulGemChargeRates", "uChargeLesser", uChargeLesser, "; Amount of weapon charge restored by a Lesser Soul Gem");
+        ini.SetLongValue("SoulGemChargeRates", "uChargeCommon", uChargeCommon, "; Amount of weapon charge restored by a Common Soul Gem");
+        ini.SetLongValue("SoulGemChargeRates", "uChargeGreater", uChargeGreater, "; Amount of weapon charge restored by a Greater Soul Gem");
+        ini.SetLongValue("SoulGemChargeRates", "uChargeGrand", uChargeGrand, "; Amount of weapon charge restored by a Grand / Black Soul Gem");
+
+        ini.SetLongValue("SoulGemPrices", "uPricePetty", uPricePetty, "; Follower purchase cost in Gold for a Petty Soul Gem");
+        ini.SetLongValue("SoulGemPrices", "uPriceLesser", uPriceLesser, "; Follower purchase cost in Gold for a Lesser Soul Gem");
+        ini.SetLongValue("SoulGemPrices", "uPriceCommon", uPriceCommon, "; Follower purchase cost in Gold for a Common Soul Gem");
+        ini.SetLongValue("SoulGemPrices", "uPriceGreater", uPriceGreater, "; Follower purchase cost in Gold for a Greater Soul Gem");
+        ini.SetLongValue("SoulGemPrices", "uPriceGrand", uPriceGrand, "; Follower purchase cost in Gold for a Grand Soul Gem");
 
         ini.SetBoolValue("Notifications", "bEnableNotifications", bEnableNotifications, "; Enable top-left HUD notification messages");
         ini.SetBoolValue("Notifications", "bNotifyPlayerCharge", bNotifyPlayerCharge, "; Show notification when player weapon is charged");

@@ -3,7 +3,7 @@
 #include "Settings.h"
 #include "PassiveRechargeManager.h"
 
-// Define SKSE Plugin Version Data for Skyrim AE 1.6.1170 & modern SKSE64 loader
+// Define SKSE Plugin Version Data for Skyrim SE (1.5.97), AE (1.6.x - 1.7.104+), and VR (1.4.15)
 SKSEPluginInfo(
     .Version = REL::Version{ 1, 0, 0, 0 },
     .Name = "Soulkeeper",
@@ -11,7 +11,7 @@ SKSEPluginInfo(
     .SupportEmail = "",
     .StructCompatibility = SKSE::StructCompatibility::Independent,
     .RuntimeCompatibility = SKSE::VersionIndependence::AddressLibrary,
-    .MinimumSKSEVersion = REL::Version{ 2, 2, 6, 0 }
+    .MinimumSKSEVersion = REL::Version{ 0, 0, 0, 0 }
 )
 
 namespace
@@ -92,7 +92,7 @@ namespace
 SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 {
     InitializeLog();
-    logger::info("Soulkeeper v1.0.0 initializing for Skyrim AE 1.6.1170...");
+    logger::info("Soulkeeper v1.0.0 initializing for Skyrim SE/AE/VR (Universal)...");
 
     SKSE::Init(a_skse);
 

@@ -8,6 +8,26 @@
 
 ---
 
+## 📋 Güncelleme Günlüğü / Changelog
+
+### v1.2 — Canlı Şarj Takibi Genişletmesi *(2026-09-12)*
+
+**Türkçe:**
+- **Yakın dövüş silahları** (hançer, kılıç, balta, topuz vb.) artık her vuruşta şarj miktarını **anında** düşürür. Skyrim motoru bu silahlar için şarjı yalnızca envanter açılınca güncellediğinden, `TESHitEvent` ile her vuruş yakalanıp şarj kendi kendine düşürülür.
+- **Yaylar** kirişi her bıraktığınızda (`TESPlayerBowShotEvent`) şarjı anında günceller; yakın dövüşle aynı yöntemle takip edilir.
+- **Arbaletler** her cıvata vuruşunda (`TESHitEvent`) anında güncellenir; kaynak olarak arbelet silah FormID'si kullanılır.
+- **Asalar** her büyü vuruşunda (`TESHitEvent`) anında güncellenir; motor, kaynak olarak silah FormID'si yerine enchantment FormID'sini gönderdiğinden eşleştirme buna göre yapılır.
+- Artık tüm silah türlerinde güncel şarjı görmek için **envanter açmaya gerek yok**.
+
+**English:**
+- **Melee weapons** (daggers, swords, axes, maces, etc.) now instantly reflect charge loss on every hit. Since the engine only flushes `ExtraCharge` on inventory open, each strike is caught via `TESHitEvent` and charge is deducted proactively.
+- **Bows** now update charge the moment you release the string (`TESPlayerBowShotEvent`), using the same approach as melee.
+- **Crossbows** update charge on every bolt impact (`TESHitEvent`), matched by crossbow weapon FormID in the event source field.
+- **Staves** update charge on every spell impact (`TESHitEvent`), matched by enchantment FormID — the engine sends the spell/enchantment as the source, not the staff weapon itself.
+- **No need to open inventory** to see the current charge of any weapon type.
+
+---
+
 <a name=english-description></a>
 ## 🇬🇧 English Description
 
@@ -84,17 +104,17 @@ Never worry about your enchanted weapons running out of juice in the middle of c
 
 ---
 
-### 💰 Standard Soul Gem Price Reference
+### 💰 Customizable Soul Gem Rates & Prices Reference
+ 
+Soul gem recharge values (points restored) and town purchase prices in gold are fully customizable in the `F1` menu and `Soulkeeper.ini`:
 
-When followers purchase soul gems in town, standard fair market prices apply:
-
-| Soul Gem Level | Contained Soul | Charge Provided | Gold Cost |
+| Soul Gem Level | Contained Soul | Default Charge | Default Purchase Price |
 | :--- | :---: | :---: | :---: |
-| **Petty** | Petty | **250** | **50 Gold** |
-| **Lesser** | Lesser | **500** | **100 Gold** |
-| **Common** | Common | **1000** | **150 Gold** |
-| **Greater** | Greater | **2000** | **300 Gold** |
-| **Grand** | Grand | **3000** | **500 Gold** |
+| **Petty** | Petty | **250 pts** | **50 Gold** |
+| **Lesser** | Lesser | **500 pts** | **100 Gold** |
+| **Common** | Common | **1000 pts** | **150 Gold** |
+| **Greater** | Greater | **2000 pts** | **300 Gold** |
+| **Grand / Black** | Grand | **3000 pts** | **500 Gold** |
 
 ---
 
@@ -112,9 +132,19 @@ Settings can be customized live in-game via the **`F1`** menu or edited directly
 | `uStockCommonCount` | `2` | Desired target stock of Common Soul Gems in follower inventory (0-20). |
 | `uStockGreaterCount` | `0` | Desired target stock of Greater Soul Gems in follower inventory (0-20). |
 | `uStockGrandCount` | `0` | Desired target stock of Grand Soul Gems in follower inventory (0-20). |
-| `fChargeThreshold` | `99.0` | Recharging triggers when weapon charge drops below this percentage (%). |
+| `uChargePetty` | `250` | Recharge amount provided by Petty Soul Gem. |
+| `uChargeLesser` | `500` | Recharge amount provided by Lesser Soul Gem. |
+| `uChargeCommon` | `1000` | Recharge amount provided by Common Soul Gem. |
+| `uChargeGreater` | `2000` | Recharge amount provided by Greater Soul Gem. |
+| `uChargeGrand` | `3000` | Recharge amount provided by Grand / Black Soul Gem. |
+| `uPricePetty` | `50` | Follower town purchase cost in gold for Petty Soul Gem. |
+| `uPriceLesser` | `100` | Follower town purchase cost in gold for Lesser Soul Gem. |
+| `uPriceCommon` | `150` | Follower town purchase cost in gold for Common Soul Gem. |
+| `uPriceGreater` | `300` | Follower town purchase cost in gold for Greater Soul Gem. |
+| `uPriceGrand` | `500` | Follower town purchase cost in gold for Grand Soul Gem. |
+| `fChargeThreshold` | `20.0` | Recharging triggers when weapon charge drops below this percentage (%). |
 | `fAutoChargeTargetPercent` | `50.0` | Maximum charge ceiling for automatic soul gem charging (%). |
-| `bAllowFollowerPurchases` | `true` | Allows followers to buy soul gems when in town near a magic vendor. |
+| `bEnableFollowerPurchase` | `true` | Allows followers to buy soul gems when in town near a magic vendor. |
 | `bEnablePassiveRecharge` | `true` | Enables slow passive recharge over in-game time. |
 
 ---
@@ -130,7 +160,7 @@ Settings can be customized live in-game via the **`F1`** menu or edited directly
 
 ### 📋 Gereksinimler
 
-- **Skyrim Special Edition** (1.5.97) veya **Skyrim Anniversary Edition** (1.6.640, 1.6.1130, 1.6.1170+)
+- **Skyrim Special Edition / Anniversary Edition** (1.5.97, 1.6.353, 1.6.640, 1.6.1130, 1.6.1170, 1.7.104+) veya **Skyrim VR** (1.4.15)
 - **SKSE64** (Skyrim Script Extender)
 - **SKSE Menu Framework** (`F1` ImGui menüsü için gereklidir)
 - **Address Library for SKSE Plugins**
