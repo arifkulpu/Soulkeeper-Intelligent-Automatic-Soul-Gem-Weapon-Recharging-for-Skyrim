@@ -31,7 +31,7 @@
 <a name=english-description></a>
 ## 🇬🇧 English Description
 
-**Soulkeeper** is a high-performance, native (C++ / SKSE64) automatic weapon recharging, follower soul gem stocking, and passive enchantment regeneration mod for Skyrim Special Edition and Anniversary Edition.
+**Soulkeeper** is a high-performance, native (C++ / SKSE64) automatic weapon recharging and passive enchantment regeneration mod for Skyrim Special Edition and Anniversary Edition. Follower Unbound manages follower soul gem purchasing and stocking.
 
 Never worry about your enchanted weapons running out of juice in the middle of combat, clunky inventory soul gem menus, or followers equipped with depleted weapons. Soulkeeper handles everything seamlessly in real-time.
 
@@ -45,14 +45,9 @@ Never worry about your enchanted weapons running out of juice in the middle of c
 - **Seamless Combat Experience**: Instant native charge updates using **Actor::UpdateWeaponAbility** and **InventoryChanges** without unequipping, sheathing, or interrupting attack animations.
 - **HUD & UI Synchronization**: Full real-time synchronization with Skyrim's native UI, SkyUI, iEquip, TrueHUD, and Equipment HUD bars.
 
-#### 2. 🛡️ Follower Town Stocking & Immersive Vendor Procurement
-- **Pre-Expedition Soul Gem Stocking**:
-  - Configure desired target stock quantities per tier (e.g. 5 Petty, 3 Lesser, 2 Common, etc.) in the MCM menu.
-  - Whenever you enter a town, city, shop, or tavern near a wizard/vendor, followers automatically restock up to your target counts using their carried gold.
-  - S-Tier preparedness: Followers carry plenty of gems before entering dungeons, so they don't need to visit towns after every small skirmish!
-- **Realistic Location & Merchant Proximity**:
-  - Followers will **ONLY** buy soul gems when in a **civilized settlement** and physically close (~50m) to a living **magic vendor, court wizard, or apothecary**.
-  - In dungeons and wilderness, followers strictly use the gems already stocked in their inventory.
+#### 2. 🛡️ Follower Soul Gem Management
+- Follower Unbound manages follower soul gem purchases and stocking.
+- Soulkeeper recharges follower weapons from soul gems already in their inventory and never purchases or restocks gems.
 
 #### 3. ⏳ Passive Enchantment Regeneration (Passive Recharge)
 - **Natural Over-Time Recovery**: Equipped enchanted weapons naturally regain **1%** charge every 60 seconds of real gameplay without consuming any soul gems.
@@ -63,7 +58,7 @@ Never worry about your enchanted weapons running out of juice in the middle of c
 
 #### 4. 🎛️ Live In-Game SKSE Menu (ImGui via SKSE Menu Framework)
 - Open the dedicated configuration & diagnostics overlay anytime in-game by pressing **F1**:
-  - **General Settings Tab**: Charge threshold, target recharge cap, follower stock quotas per tier, notification toggles, and price caps.
+  - **General Settings Tab**: Charge threshold, target recharge cap, notification toggles, and charge values.
   - **Live Status & Controls Tab**: Inspection of equipped weapons, charge values, color-coded progress bars, and follower gold tracker.
 
 ---
@@ -71,7 +66,7 @@ Never worry about your enchanted weapons running out of juice in the middle of c
 <a name=türkçe-açıklama></a>
 ## 🇹🇷 Türkçe Açıklama
 
-**Soulkeeper**, Skyrim Special Edition ve Anniversary Edition için geliştirilmiş, yüksek performanslı ve tamamen yerel (C++ / SKSE64) bir otomatik silah şarj etme, yoldaş ruh taşı stoklama ve pasif büyü yenileme modudur.
+**Soulkeeper**, Skyrim Special Edition ve Anniversary Edition için geliştirilmiş, yüksek performanslı ve tamamen yerel (C++ / SKSE64) bir otomatik silah şarj etme ve pasif büyü yenileme modudur. Yoldaşların ruh taşı satın alma ve stoklama işlerini Follower Unbound yönetir.
 
 ---
 
@@ -83,13 +78,9 @@ Never worry about your enchanted weapons running out of juice in the middle of c
 - **Savaş Esnasında Kesintisiz Kullanım**: Silahı kınına sokmadan veya animasyonları kesmeden **Actor::UpdateWeaponAbility** ve **InventoryChanges** ile doğrudan günceller.
 - **HUD & SkyUI / iEquip Senkronizasyonu**: iEquip, TrueHUD ve SkyUI barlarıyla anında senkronize olur.
 
-#### 2. 🛡️ Yoldaş Ruh Taşı Stoklama & Kasabada Otomatik Tedarik
-- **Sefer Öncesi Ruh Taşı Stoklama (Stock System)**:
-  - F1 menüsünden 5 farklı ruh taşı türü için hedef stok miktarları belirlenebilir (Örn: 5 Petty, 3 Lesser, 2 Common vb.).
-  - Bir kasabaya, şehre veya hana gidip yakınınızda bir saray büyücüsü/simyacı olduğunda; yoldaşınız eksik taşları kendi altınıyla topluca satın alıp **çantasına stoklar**.
-  - Böylece zindana veya sefere çıkmadan önce yoldaşınızın çantası dolu olur; her savaş sonrası kasaba kasaba taş aramakla uğraşmazsınız!
-- **Gerçekçi & Sürükleyici Şehir/Satıcı Kontrolü**:
-  - Yoldaşlar **sadece** yerleşim yerlerindeyken ve yakınlarında (~50m) canlı bir **saray büyücüsü, simyacı veya tüccar** varken alışveriş yapabilir.
+#### 2. 🛡️ Yoldaş Ruh Taşı Yönetimi
+- Yoldaşların ruh taşı satın alma ve stoklama işlerini Follower Unbound yönetir.
+- Soulkeeper, yoldaşın envanterindeki taşlarla silahlarını şarj eder; otomatik satın alma veya stok yenileme yapmaz.
 
 #### 3. ⏳ Pasif Büyü Yenileme (Passive Recharge)
 - **Zamanla Kendiliğinden Dolum**: Büyülü silahlarınız hiçbir ruh taşı harcamadan, normal oyun esnasında her 60 saniyede bir azami şarjının **%1'ini** yavaşça geri kazanır.
@@ -99,22 +90,22 @@ Never worry about your enchanted weapons running out of juice in the middle of c
 
 #### 4. 🎛️ Canlı SKSE In-Game MCM Menüsü (ImGui / SKSE Menu Framework)
 - Oyun içerisindeyken **F1** tuşuna basarak açılan özel ImGui arayüzü:
-  - **General Settings**: Eşik değerleri, hedef sınırları, 5 farklı seviye için stok hedefleri, **3 dakikalık hatırlatma periyoduna sahip bildirimler** ve fiyat ayarları.
+  - **General Settings**: Eşik değerleri, hedef sınırları, şarj miktarları ve bildirim ayarları.
   - **Live Status & Controls**: Kuşanılmış silahların şarj durumu, doluluk oranları, renkli ilerleme barları ve yoldaş altın/silah bilgileri.
 
 ---
 
-### 💰 Customizable Soul Gem Rates & Prices Reference
+### 💎 Soul Gem Charge Values
  
-Soul gem recharge values (points restored) and town purchase prices in gold are fully customizable in the `F1` menu and `Soulkeeper.ini`:
+Soul gem recharge values (points restored) are configurable in the `F1` menu and `Soulkeeper.ini`. Follower Unbound manages purchase prices and stocking.
 
-| Soul Gem Level | Contained Soul | Default Charge | Default Purchase Price |
-| :--- | :---: | :---: | :---: |
-| **Petty** | Petty | **250 pts** | **50 Gold** |
-| **Lesser** | Lesser | **500 pts** | **100 Gold** |
-| **Common** | Common | **1000 pts** | **150 Gold** |
-| **Greater** | Greater | **2000 pts** | **300 Gold** |
-| **Grand / Black** | Grand | **3000 pts** | **500 Gold** |
+| Soul Gem Level | Contained Soul | Default Charge |
+| :--- | :---: | :---: |
+| **Petty** | Petty | **250 pts** |
+| **Lesser** | Lesser | **500 pts** |
+| **Common** | Common | **1000 pts** |
+| **Greater** | Greater | **2000 pts** |
+| **Grand / Black** | Grand | **3000 pts** |
 
 ---
 
@@ -126,25 +117,13 @@ Settings can be customized live in-game via the **`F1`** menu or edited directly
 | :--- | :--- | :--- |
 | `bEnablePlayerAutoCharge` | `true` | Enables automatic soul gem recharging for the player. |
 | `bEnableFollowerAutoCharge`| `true` | Enables automatic recharging for active followers. |
-| `bEnableFollowerStocking` | `true` | Enables automatic pre-stocking of soul gems when in town near a vendor. |
-| `uStockPettyCount` | `5` | Desired target stock of Petty Soul Gems in follower inventory (0-20). |
-| `uStockLesserCount` | `3` | Desired target stock of Lesser Soul Gems in follower inventory (0-20). |
-| `uStockCommonCount` | `2` | Desired target stock of Common Soul Gems in follower inventory (0-20). |
-| `uStockGreaterCount` | `0` | Desired target stock of Greater Soul Gems in follower inventory (0-20). |
-| `uStockGrandCount` | `0` | Desired target stock of Grand Soul Gems in follower inventory (0-20). |
 | `uChargePetty` | `250` | Recharge amount provided by Petty Soul Gem. |
 | `uChargeLesser` | `500` | Recharge amount provided by Lesser Soul Gem. |
 | `uChargeCommon` | `1000` | Recharge amount provided by Common Soul Gem. |
 | `uChargeGreater` | `2000` | Recharge amount provided by Greater Soul Gem. |
 | `uChargeGrand` | `3000` | Recharge amount provided by Grand / Black Soul Gem. |
-| `uPricePetty` | `50` | Follower town purchase cost in gold for Petty Soul Gem. |
-| `uPriceLesser` | `100` | Follower town purchase cost in gold for Lesser Soul Gem. |
-| `uPriceCommon` | `150` | Follower town purchase cost in gold for Common Soul Gem. |
-| `uPriceGreater` | `300` | Follower town purchase cost in gold for Greater Soul Gem. |
-| `uPriceGrand` | `500` | Follower town purchase cost in gold for Grand Soul Gem. |
 | `fChargeThreshold` | `20.0` | Recharging triggers when weapon charge drops below this percentage (%). |
 | `fAutoChargeTargetPercent` | `50.0` | Maximum charge ceiling for automatic soul gem charging (%). |
-| `bEnableFollowerPurchase` | `true` | Allows followers to buy soul gems when in town near a magic vendor. |
 | `bEnablePassiveRecharge` | `true` | Enables slow passive recharge over in-game time. |
 
 ---

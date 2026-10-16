@@ -12,6 +12,7 @@ namespace Soulkeeper
         uint32_t chargeValue{ 0 };
         int32_t count{ 0 };
         bool isBlack{ false };
+        bool isReusable{ false }; // Azura's Star / The Black Star / Varla Stones — never consumed
     };
 
     class SoulGemManager

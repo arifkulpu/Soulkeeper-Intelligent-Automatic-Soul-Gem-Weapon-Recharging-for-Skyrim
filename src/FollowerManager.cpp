@@ -28,6 +28,15 @@ namespace Soulkeeper
             return false;
         }
 
+        // Only humanoid NPCs count as followers — horses, dogs and other creature
+        // teammates also satisfy IsPlayerTeammate but must not be treated as followers.
+        if (auto* base = a_actor->GetActorBase()) {
+            auto* race = base->GetRace();
+            if (race && !race->HasKeywordString("ActorTypeNPC")) {
+                return false;
+            }
+        }
+
         // Framework / Vanilla: IsPlayerTeammate is set true for active followers
         if (a_actor->IsPlayerTeammate()) {
             return true;

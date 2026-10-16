@@ -75,33 +75,6 @@ namespace Soulkeeper
         UpdateCooldown(a_follower->GetFormID());
     }
 
-    void NotificationManager::NotifyFollowerCannotAfford(RE::Actor* a_follower)
-    {
-        if (!a_follower) return;
-        auto settings = Settings::GetSingleton();
-        if (!settings->bEnableNotifications || !settings->bNotifyFailedPurchase) return;
-
-        if (!CanNotifyFollower(a_follower->GetFormID())) {
-            return;
-        }
-
-        const char* name = a_follower->GetDisplayFullName();
-        std::string msg = std::format("{} cannot afford a Soul Gem.", name ? name : "Follower");
-        Notify(msg);
-        UpdateCooldown(a_follower->GetFormID());
-    }
-
-    void NotificationManager::NotifyFollowerPurchased(RE::Actor* a_follower, uint32_t a_goldSpent, std::string_view a_gemName)
-    {
-        if (!a_follower) return;
-        auto settings = Settings::GetSingleton();
-        if (!settings->bEnableNotifications || !settings->bNotifyFollowerPurchase) return;
-
-        const char* name = a_follower->GetDisplayFullName();
-        std::string msg = std::format("{} purchased a {} for {} Gold.", name ? name : "Follower", a_gemName, a_goldSpent);
-        Notify(msg);
-    }
-
     void NotificationManager::NotifyWeaponCharged(RE::Actor* a_actor, std::string_view a_weaponName)
     {
         if (!a_actor) return;

@@ -2,6 +2,7 @@
 #include "SoulkeeperManager.h"
 #include "Settings.h"
 #include "PassiveRechargeManager.h"
+#include "KingCore/KingCoreAPI.h"
 
 // Define SKSE Plugin Version Data for Skyrim SE (1.5.97), AE (1.6.x - 1.7.104+), and VR (1.4.15)
 SKSEPluginInfo(
@@ -43,11 +44,27 @@ namespace
         spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%l] [%t] [%s:%#] %v");
     }
 
+    // ---- King Core uyumlulugu: soul gem satin almasini Follower Unbound'a birak ----
+    void AnnounceSoulManager() {
+        auto* messaging = SKSE::GetMessagingInterface();
+        if (!messaging) return;
+
+        KingCore::SoulManagerRegistration reg{};
+        reg.apiVersion = KingCore::API_VERSION;
+        reg.active = 0;
+
+        // King Core'a yonelik + yayin (King Core kurulu degilse tuketiciler yine de alsin)
+        messaging->Dispatch(KingCore::MESSAGE_TYPE_REGISTER_SOUL_MANAGER, &reg, sizeof(reg), "KingCore");
+        messaging->Dispatch(KingCore::MESSAGE_TYPE_REGISTER_SOUL_MANAGER, &reg, sizeof(reg), nullptr);
+        logger::info("SoulKeeper: Soul gem purchasing delegated to Follower Unbound (active=0).");
+    }
+
     void OnMessage(SKSE::MessagingInterface::Message* a_msg)
     {
         switch (a_msg->type) {
         case SKSE::MessagingInterface::kDataLoaded:
             Soulkeeper::SoulkeeperManager::GetSingleton()->Initialize();
+            AnnounceSoulManager();
             break;
         case SKSE::MessagingInterface::kPostLoadGame:
         case SKSE::MessagingInterface::kNewGame:

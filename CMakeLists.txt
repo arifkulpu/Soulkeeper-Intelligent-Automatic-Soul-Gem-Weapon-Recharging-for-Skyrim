@@ -72,6 +72,7 @@ target_include_directories(
         ${xbyak_SOURCE_DIR}
         ${simpleini_SOURCE_DIR}
         extern/CommonLibSSE-NG/include
+        "C:/Users/pc/Desktop/projeler/King Core/include"
 )
 
 target_include_directories(

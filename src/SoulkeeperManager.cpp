@@ -4,7 +4,6 @@
 #include "FollowerManager.h"
 #include "WeaponManager.h"
 #include "SoulGemManager.h"
-#include "PurchaseManager.h"
 #include "PassiveRechargeManager.h"
 #include "NotificationManager.h"
 #include "MenuManager.h"
@@ -47,7 +46,7 @@ namespace Soulkeeper
         const RE::MenuOpenCloseEvent* a_event,
         RE::BSTEventSource<RE::MenuOpenCloseEvent>*)
     {
-        if (!a_event) {
+        if (!a_event || !Settings::GetSingleton()->bEnableMod) {
             return RE::BSEventNotifyControl::kContinue;
         }
 
@@ -72,7 +71,7 @@ namespace Soulkeeper
         const RE::TESHitEvent* a_event,
         RE::BSTEventSource<RE::TESHitEvent>*)
     {
-        if (!a_event) return RE::BSEventNotifyControl::kContinue;
+        if (!a_event || !Settings::GetSingleton()->bEnableMod) return RE::BSEventNotifyControl::kContinue;
 
         // Check aggressor: must be player or active follower
         auto aggressorRef = a_event->cause.get();
@@ -179,6 +178,18 @@ namespace Soulkeeper
                 wpn.currentCharge, newCharge, wpn.maxCharge);
 
             WeaponManager::GetSingleton()->SetWeaponCharge(actor, wpn, newCharge);
+
+            // In-combat instant recharge check:
+            // If the weapon dropped to or below threshold, recharge immediately without waiting 10s!
+            auto settings = Settings::GetSingleton();
+            float newPercent = (wpn.maxCharge > 0.0f) ? (newCharge / wpn.maxCharge) * 100.0f : 0.0f;
+            if (newPercent <= settings->fChargeThreshold) {
+                if (isPlayer) {
+                    PlayerManager::GetSingleton()->ProcessPlayer();
+                } else if (isFollower) {
+                    ProcessFollowers();
+                }
+            }
             break;
         }
 
@@ -189,7 +200,7 @@ namespace Soulkeeper
         const RE::TESPlayerBowShotEvent* a_event,
         RE::BSTEventSource<RE::TESPlayerBowShotEvent>*)
     {
-        if (!a_event || a_event->weapon == 0) {
+        if (!Settings::GetSingleton()->bEnableMod || !a_event || a_event->weapon == 0) {
             return RE::BSEventNotifyControl::kContinue;
         }
 
@@ -198,7 +209,8 @@ namespace Soulkeeper
             return RE::BSEventNotifyControl::kContinue;
         }
 
-        // Find the equipped enchanted bow/crossbow that matches the fired weapon.
+        // Find the equipped enchanted bow that matches the fired weapon. Crossbows
+        // are charged by TESHitEvent on impact, so handling them here would double-charge.
         // Then proactively deduct charge — same approach as TESHitEvent for melee.
         // The engine does NOT flush ExtraCharge to liveEntry in real time for ranged
         // weapons, so we track it ourselves via SetWeaponCharge.
@@ -208,7 +220,7 @@ namespace Soulkeeper
             if (wpn.weapon->GetFormID() != a_event->weapon) continue;
 
             auto wt = wpn.weapon->GetWeaponType();
-            if (wt != RE::WEAPON_TYPE::kBow && wt != RE::WEAPON_TYPE::kCrossbow) continue;
+            if (wt != RE::WEAPON_TYPE::kBow) continue;
 
             float cost = wpn.enchantment->CalculateMagickaCost(player);
             if (cost <= 0.0f) {
@@ -223,6 +235,13 @@ namespace Soulkeeper
                 wpn.weapon->GetName(), cost, wpn.currentCharge, newCharge, wpn.maxCharge);
 
             WeaponManager::GetSingleton()->SetWeaponCharge(player, wpn, newCharge);
+
+            // In-combat instant recharge check for player bow/crossbow:
+            auto settings = Settings::GetSingleton();
+            float newPercent = (wpn.maxCharge > 0.0f) ? (newCharge / wpn.maxCharge) * 100.0f : 0.0f;
+            if (newPercent <= settings->fChargeThreshold) {
+                PlayerManager::GetSingleton()->ProcessPlayer();
+            }
             break;
         }
 
@@ -233,14 +252,13 @@ namespace Soulkeeper
     void SoulkeeperManager::ProcessFollowers()
     {
         auto settings = Settings::GetSingleton();
-        if (!settings->bEnableFollowerAutoCharge) return;
+        if (!settings->bEnableMod) return;
 
         auto followers = FollowerManager::GetSingleton()->GetActiveFollowers();
         for (auto* follower : followers) {
             if (!follower) continue;
 
-            // Restock soul gems if follower is in town near a vendor
-            PurchaseManager::GetSingleton()->TryFollowerRestockStockGems(follower);
+            if (!settings->bEnableFollowerAutoCharge) continue;
 
             auto weapons = WeaponManager::GetSingleton()->GetEquippedEnchantedWeapons(follower);
             for (const auto& wpn : weapons) {
@@ -250,7 +268,6 @@ namespace Soulkeeper
                 float targetMaxCharge = wpn.maxCharge * (targetCapPercent / 100.0f);
 
                 EnchantedWeaponInfo current = wpn;
-                bool anyPurchaseAttempted = false;
 
                 while (current.currentCharge < targetMaxCharge) {
                     float missing = targetMaxCharge - current.currentCharge;
@@ -265,26 +282,10 @@ namespace Soulkeeper
                         current.currentCharge = std::min(previousCharge + static_cast<float>(bestGem->chargeValue), current.maxCharge);
                         current.chargePercent = (current.currentCharge / current.maxCharge) * 100.0f;
                     } else {
-                        // 2. No soul gem in follower inventory -> Attempt follower purchase (once per weapon per check)
-                        bool purchased = false;
-                        if (settings->bEnableFollowerPurchase && !anyPurchaseAttempted) {
-                            anyPurchaseAttempted = true;
-                            purchased = PurchaseManager::GetSingleton()->TryFollowerPurchaseSoulGem(follower, current);
-                        }
-
-                        // 3. If purchase is disabled, already attempted, or failed, notify lack of soul gems and stop
-                        if (!purchased) {
-                            NotificationManager::GetSingleton()->NotifyFollowerNoSoulGems(follower);
-                            break;
-                        }
-
-                        // Satın alma sonrası bir defaya mahsus refreshed oku
-                        auto refreshed = WeaponManager::GetSingleton()->GetEquippedEnchantedWeapons(follower);
-                        auto it = std::find_if(refreshed.begin(), refreshed.end(), [&](const EnchantedWeaponInfo& w) {
-                            return w.weapon == current.weapon && w.isLeftHand == current.isLeftHand;
-                        });
-                        if (it == refreshed.end()) break;
-                        current = *it;
+                        // Procurement is handled by Follower Unbound. Soulkeeper only
+                        // recharges from soul gems already carried by the follower.
+                        NotificationManager::GetSingleton()->NotifyFollowerNoSoulGems(follower);
+                        break;
                     }
                 }
             }

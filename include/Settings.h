@@ -33,20 +33,6 @@ namespace Soulkeeper
         bool bAllowGrandSoulGems{ true };
         bool bAllowBlackSoulGems{ false };        // Protected by default to not waste black souls
 
-        // Follower Purchase & Stocking
-        bool bEnableFollowerPurchase{ true };
-        bool bEnableFollowerStocking{ true };        // Auto restock soul gems in town
-        bool bUseFollowerGoldOnly{ true };
-        uint32_t uMaxPurchasePrice{ 500 };
-        uint32_t uMinGoldRemaining{ 50 };
-
-        // Desired stock quantities per tier
-        uint32_t uStockPettyCount{ 5 };              // Desired count of Petty Soul Gems in follower inventory
-        uint32_t uStockLesserCount{ 3 };             // Desired count of Lesser Soul Gems
-        uint32_t uStockCommonCount{ 2 };             // Desired count of Common Soul Gems
-        uint32_t uStockGreaterCount{ 0 };            // Desired count of Greater Soul Gems
-        uint32_t uStockGrandCount{ 0 };              // Desired count of Grand Soul Gems
-
         // Soul Gem Charge Rates (Enchantment points restored)
         uint32_t uChargePetty{ 250 };
         uint32_t uChargeLesser{ 500 };
@@ -54,20 +40,11 @@ namespace Soulkeeper
         uint32_t uChargeGreater{ 2000 };
         uint32_t uChargeGrand{ 3000 };
 
-        // Soul Gem Purchase Prices (Follower town purchase cost in Gold)
-        uint32_t uPricePetty{ 50 };
-        uint32_t uPriceLesser{ 100 };
-        uint32_t uPriceCommon{ 150 };
-        uint32_t uPriceGreater{ 300 };
-        uint32_t uPriceGrand{ 500 };
-
         // Notifications
         bool bEnableNotifications{ true };
         bool bNotifyPlayerCharge{ true };
         bool bNotifyFollowerCharge{ true };
         bool bNotifyNoSoulGems{ true };
-        bool bNotifyFollowerPurchase{ true };
-        bool bNotifyFailedPurchase{ true };
         bool bNotifyPassiveRecharge{ false };
         float fNotificationCooldown{ 180.0f };     // 3 minutes reminder cooldown per follower
 

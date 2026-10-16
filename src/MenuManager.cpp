@@ -4,7 +4,6 @@
 #include "FollowerManager.h"
 #include "WeaponManager.h"
 #include "SoulGemManager.h"
-#include "PurchaseManager.h"
 #include "PassiveRechargeManager.h"
 #include "NotificationManager.h"
 
@@ -67,57 +66,8 @@ namespace Soulkeeper
                 if (ImGuiMCP::Checkbox("Allow Black Soul Gems", &settings->bAllowBlackSoulGems)) settingsChanged = true;
 
                 ImGuiMCP::Separator();
-                ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Follower Soul Gem Purchasing & Town Stocking");
-                if (ImGuiMCP::Checkbox("Allow Followers to Buy Soul Gems", &settings->bEnableFollowerPurchase)) settingsChanged = true;
-                if (ImGuiMCP::Checkbox("Auto-Restock Stock Quantities in Town", &settings->bEnableFollowerStocking)) settingsChanged = true;
-                if (ImGuiMCP::Checkbox("Strictly Follower Gold Only", &settings->bUseFollowerGoldOnly)) settingsChanged = true;
-
-                int maxPrice = static_cast<int>(settings->uMaxPurchasePrice);
-                if (ImGuiMCP::SliderInt("Max Gold Follower Can Spend", &maxPrice, 50, 2000, "%d Gold", 0)) {
-                    settings->uMaxPurchasePrice = static_cast<uint32_t>(maxPrice);
-                    settingsChanged = true;
-                }
-
-                int minGold = static_cast<int>(settings->uMinGoldRemaining);
-                if (ImGuiMCP::SliderInt("Min Gold Retained by Follower", &minGold, 0, 500, "%d Gold", 0)) {
-                    settings->uMinGoldRemaining = static_cast<uint32_t>(minGold);
-                    settingsChanged = true;
-                }
-
-                if (settings->bEnableFollowerStocking) {
-                    ImGuiMCP::Spacing();
-                    ImGuiMCP::TextColored(ImGuiMCP::ImVec4(1.0f, 0.85f, 0.3f, 1.0f), "Follower Target Stock Inventory (Per Tier):");
-
-                    int stockPetty = static_cast<int>(settings->uStockPettyCount);
-                    if (ImGuiMCP::SliderInt("Petty Soul Gems Stock", &stockPetty, 0, 20, "%d gems", 0)) {
-                        settings->uStockPettyCount = static_cast<uint32_t>(stockPetty);
-                        settingsChanged = true;
-                    }
-
-                    int stockLesser = static_cast<int>(settings->uStockLesserCount);
-                    if (ImGuiMCP::SliderInt("Lesser Soul Gems Stock", &stockLesser, 0, 20, "%d gems", 0)) {
-                        settings->uStockLesserCount = static_cast<uint32_t>(stockLesser);
-                        settingsChanged = true;
-                    }
-
-                    int stockCommon = static_cast<int>(settings->uStockCommonCount);
-                    if (ImGuiMCP::SliderInt("Common Soul Gems Stock", &stockCommon, 0, 20, "%d gems", 0)) {
-                        settings->uStockCommonCount = static_cast<uint32_t>(stockCommon);
-                        settingsChanged = true;
-                    }
-
-                    int stockGreater = static_cast<int>(settings->uStockGreaterCount);
-                    if (ImGuiMCP::SliderInt("Greater Soul Gems Stock", &stockGreater, 0, 20, "%d gems", 0)) {
-                        settings->uStockGreaterCount = static_cast<uint32_t>(stockGreater);
-                        settingsChanged = true;
-                    }
-
-                    int stockGrand = static_cast<int>(settings->uStockGrandCount);
-                    if (ImGuiMCP::SliderInt("Grand Soul Gems Stock", &stockGrand, 0, 20, "%d gems", 0)) {
-                        settings->uStockGrandCount = static_cast<uint32_t>(stockGrand);
-                        settingsChanged = true;
-                    }
-                }
+                ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Follower Soul Gem Procurement");
+                ImGuiMCP::Text("Follower Unbound manages soul gem purchasing and stocking. Soulkeeper only uses gems already in the follower's inventory.");
 
                 ImGuiMCP::Separator();
                 ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Soul Gem Charge Rates (Enchantment Points Restored)");
@@ -148,34 +98,6 @@ namespace Soulkeeper
                 }
 
                 ImGuiMCP::Separator();
-                ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Soul Gem Purchase Prices (Follower Cost in Gold)");
-                int prcPetty = static_cast<int>(settings->uPricePetty);
-                if (ImGuiMCP::SliderInt("Petty Purchase Price", &prcPetty, 10, 500, "%d Gold", 0)) {
-                    settings->uPricePetty = static_cast<uint32_t>(prcPetty);
-                    settingsChanged = true;
-                }
-                int prcLesser = static_cast<int>(settings->uPriceLesser);
-                if (ImGuiMCP::SliderInt("Lesser Purchase Price", &prcLesser, 20, 1000, "%d Gold", 0)) {
-                    settings->uPriceLesser = static_cast<uint32_t>(prcLesser);
-                    settingsChanged = true;
-                }
-                int prcCommon = static_cast<int>(settings->uPriceCommon);
-                if (ImGuiMCP::SliderInt("Common Purchase Price", &prcCommon, 30, 1500, "%d Gold", 0)) {
-                    settings->uPriceCommon = static_cast<uint32_t>(prcCommon);
-                    settingsChanged = true;
-                }
-                int prcGreater = static_cast<int>(settings->uPriceGreater);
-                if (ImGuiMCP::SliderInt("Greater Purchase Price", &prcGreater, 50, 3000, "%d Gold", 0)) {
-                    settings->uPriceGreater = static_cast<uint32_t>(prcGreater);
-                    settingsChanged = true;
-                }
-                int prcGrand = static_cast<int>(settings->uPriceGrand);
-                if (ImGuiMCP::SliderInt("Grand Purchase Price", &prcGrand, 100, 5000, "%d Gold", 0)) {
-                    settings->uPriceGrand = static_cast<uint32_t>(prcGrand);
-                    settingsChanged = true;
-                }
-
-                ImGuiMCP::Separator();
                 ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Passive Over-Time Recharge");
                 if (ImGuiMCP::SliderFloat("Passive Recharge Rate (% / tick)", &settings->fPassiveRechargePercent, 0.1f, 10.0f, "%.1f%%", 0)) settingsChanged = true;
                 if (ImGuiMCP::SliderFloat("Passive Recharge Cap Limit (%)", &settings->fPassiveRechargeCapPercent, 1.0f, 100.0f, "%.0f%%", 0)) settingsChanged = true;
@@ -192,8 +114,6 @@ namespace Soulkeeper
                     if (ImGuiMCP::Checkbox("Notify Player Weapon Charged", &settings->bNotifyPlayerCharge)) settingsChanged = true;
                     if (ImGuiMCP::Checkbox("Notify Follower Weapon Charged", &settings->bNotifyFollowerCharge)) settingsChanged = true;
                     if (ImGuiMCP::Checkbox("Notify Follower Lacks Soul Gems", &settings->bNotifyNoSoulGems)) settingsChanged = true;
-                    if (ImGuiMCP::Checkbox("Notify Follower Soul Gem Purchase", &settings->bNotifyFollowerPurchase)) settingsChanged = true;
-                    if (ImGuiMCP::Checkbox("Notify Follower Insufficient Gold", &settings->bNotifyFailedPurchase)) settingsChanged = true;
                     if (ImGuiMCP::Checkbox("Notify Passive Recharge Ticks", &settings->bNotifyPassiveRecharge)) settingsChanged = true;
                     if (ImGuiMCP::SliderFloat("Follower Notification Cooldown (sec)", &settings->fNotificationCooldown, 10.0f, 900.0f, "%.0f s", 0)) settingsChanged = true;
                 }
@@ -271,9 +191,7 @@ namespace Soulkeeper
                     for (auto* follower : followers) {
                         if (!follower) continue;
                         const char* name = follower->GetDisplayFullName() ? follower->GetDisplayFullName() : "Follower";
-                        int32_t gold = PurchaseManager::GetSingleton()->GetFollowerGold(follower);
-
-                        ImGuiMCP::Text("• %s  (Gold: %d)", name, gold);
+                        ImGuiMCP::Text("• %s", name);
                         auto it = followerWeapons.find(follower);
                         if (it == followerWeapons.end() || it->second.empty()) {
                             ImGuiMCP::TextDisabled("    No enchanted weapon equipped.");
